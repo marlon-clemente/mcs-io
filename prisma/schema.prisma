@@ -23,3 +23,51 @@ model User {
 
   @@map("users")
 }
+
+model Address {
+  id         String   @id @default(uuid())
+  street     String
+  number     String
+  complement String?
+  district   String
+  city       String
+  state      String
+  country    String
+  zipCode    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("addresses")
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  phone     String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contacts")
+}
+
+model Company {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model CreatePassword {
+  id          String   @id @default(uuid())
+  hash        String   @unique
+  email       String
+  expireToken String
+  type        Int // 1 - create user and password, 2 - reset password
+  created     DateTime @default(now())
+
+  @@map("tb_create_password")
+}

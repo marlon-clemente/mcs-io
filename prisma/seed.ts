@@ -12,6 +12,7 @@ async function main() {
       nameComplete: "Administrador",
       createdAt: new Date(),
       lastAccess: new Date(),
+      rules: ["ADMIN"],
     },
   });
   console.log(`Created user: ${newUser.name} (ID: ${newUser.id})`);

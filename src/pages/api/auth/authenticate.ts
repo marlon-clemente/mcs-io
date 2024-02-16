@@ -31,7 +31,7 @@ export default async function authenticate(
     }
 
     const generateRefreshToken = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id, email: user.email, rules: user.rules },
       process.env.JWT_SECRET_KEY || "",
       {
         expiresIn: "1h",
@@ -40,7 +40,7 @@ export default async function authenticate(
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken: generateRefreshToken },
+      data: { refreshToken: generateRefreshToken, lastAccess: new Date() },
     });
 
     const generateAccessToken = jwt.sign(
@@ -56,7 +56,10 @@ export default async function authenticate(
       `accessToken=${generateAccessToken}; HttpOnly; Path=/; Max-Age=3600; SameSite=Lax;`,
     ]);
 
-    res.status(201).json({ message: "Autorizado" });
+    res.status(200).json({
+      message: "Autorizado",
+      to: user.rules.includes("ADMIN") ? "/admin" : "/app",
+    });
   } else {
     res.setHeader("Allow", ["POST"]);
     res.status(405).end(`Método ${req.method} Não Permitido`);
