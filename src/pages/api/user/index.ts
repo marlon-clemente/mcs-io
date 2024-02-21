@@ -15,10 +15,7 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
       });
 
       const { email, validateInMinutes } = bodyRequest.parse(req.body);
-
-      // generat uid
       const hash = uuidV4();
-
       const expireToken = jwt.sign({ hash }, process.env.JWT_SECRET_KEY || "", {
         expiresIn: validateInMinutes + "m",
       });
@@ -51,6 +48,18 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json({
         message: "Autorizado",
       });
+    } else if (req.method === "GET") {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          rules: true,
+          lastAccess: true,
+        },
+      });
+
+      res.status(200).json(users);
     } else {
       res.setHeader("Allow", ["POST"]);
       res.status(405).end(`Método ${req.method} Não Permitido`);
