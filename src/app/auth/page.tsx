@@ -2,6 +2,7 @@
 
 import Button from "@/components/button";
 import * as Form from "@/components/form";
+import { userStore } from "@/store/user";
 import { authenticateUserSchema } from "@/types/auth/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +12,9 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Auth() {
+  const { setUser } = userStore((state) => state);
   const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -20,17 +23,27 @@ export default function Auth() {
     resolver: zodResolver(authenticateUserSchema),
   });
 
-  const authenticate = useMutation({
+  const {
+    error,
+    mutate: authenticate,
+    isLoading,
+  } = useMutation({
     mutationKey: ["auth"],
     mutationFn: async (data: any) => {
       const response = await axios.post("/api/auth/authenticate", data);
+      setUser({
+        email: response.data.email,
+        name: response.data.name,
+        nameComplete: response.data.nameComplete,
+        rules: response.data.rules,
+      });
       router.push(response.data.to);
     },
   });
 
   const handleAuth = (data: any) => {
     console.log(data);
-    authenticate.mutate(data);
+    authenticate(data);
   };
 
   return (
@@ -74,9 +87,10 @@ export default function Auth() {
           )}
         />
 
-        {authenticate.error?.message && <div>{authenticate.error.message}</div>}
         <Form.Submit asChild>
-          <Button>Entrar</Button>
+          <Button variant="primary" isLoadind={isLoading}>
+            Entrar
+          </Button>
         </Form.Submit>
       </Form.Root>
     </div>

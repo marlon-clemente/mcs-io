@@ -59,6 +59,10 @@ export default async function authenticate(
 
       res.status(200).json({
         message: "Autorizado",
+        email: user.email,
+        rules: user.rules,
+        name: user.name,
+        nameComplete: user.nameComplete,
         to: user.rules.includes("ADMIN") ? "/admin" : "/app",
       });
     } catch (error) {

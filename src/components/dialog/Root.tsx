@@ -1,7 +1,7 @@
-import * as Dialog from "@radix-ui/react-alert-dialog";
+import * as Dialog from "@radix-ui/react-dialog";
 import React, { RefAttributes } from "react";
 
-type RootProps = Dialog.AlertDialogProps &
+type RootProps = Dialog.DialogProps &
   RefAttributes<HTMLDivElement> & {
     children: React.ReactNode;
   };

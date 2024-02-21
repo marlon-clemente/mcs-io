@@ -33,7 +33,6 @@ export const FieldText: ForwardRefExoticComponent<FieldTextProps> =
         {props.icon && <span className="text-gray-500">{props.icon}</span>}
         <Form.Control asChild>
           <input
-            type="text"
             className={twMerge(
               "flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none focus:ring-0"
             )}
