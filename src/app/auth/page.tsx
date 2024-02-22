@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@/components/button";
 import * as Form from "@/components/form";
+import Button from "@/components/ui/button";
 import { userStore } from "@/store/user";
 import { authenticateUserSchema } from "@/types/auth/schema";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -5,7 +5,7 @@ import { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
-  base: "h-10 disabled:opacity-50 inline-flex items-center text-md flex justify-center font-medium",
+  base: "h-8 text-[14px] px-4 disabled:opacity-50 inline-flex items-center flex items-center justify-center font-medium hover:cursor-pointer",
 
   variants: {
     variant: {

@@ -1,4 +1,4 @@
-import * as Dialog from "@radix-ui/react-alert-dialog";
+import * as Dialog from "@radix-ui/react-dialog";
 import React, { ForwardRefExoticComponent, RefAttributes } from "react";
 
 type ContentProps = Dialog.DialogPortalProps &

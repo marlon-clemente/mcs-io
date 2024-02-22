@@ -15,7 +15,9 @@ type FieldTextProps = Form.FormFieldProps &
     icon?: ReactElement;
     messageError?: string;
   };
-
+/**
+ * @deprecated Use `InputText` instead
+ */
 export const FieldText: ForwardRefExoticComponent<FieldTextProps> =
   React.forwardRef((props, ref) => (
     <Form.Field {...props} ref={ref} className="flex flex-col gap-1">

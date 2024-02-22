@@ -66,6 +66,7 @@ export default async function authenticate(
         to: user.rules.includes("ADMIN") ? "/admin" : "/app",
       });
     } catch (error) {
+      console.log("error de auth", error);
       return res.status(400).json({ message: error });
     }
   } else {
