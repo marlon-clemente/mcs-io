@@ -1,6 +1,7 @@
 import * as Fields from "@/components/ui/fields";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { LucideSend } from "lucide-react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -19,7 +20,7 @@ const newUserSchmema = z.object({
     .email({
       message: "E-mail inválido",
     }),
-  validateInMinutes: z.number().int().positive().default(60),
+  validateInMinutes: z.any(),
 });
 type NewUser = z.infer<typeof newUserSchmema>;
 
@@ -32,15 +33,19 @@ export const NewUser: React.FC = () => {
     resolver: zodResolver(newUserSchmema),
   });
 
-  const submitForm = (data: NewUser) => {
-    console.log(data);
-  };
-
   const mutate = useMutation({
-    onMutate: async (data) => {
+    onMutate: async (data: NewUser) => {
+      await axios.post("/api/user", data);
       console.log(data);
     },
   });
+
+  const submitForm = (data: NewUser) => {
+    mutate.mutate({
+      email: data.email,
+      validateInMinutes: Number(data.validateInMinutes),
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-4">

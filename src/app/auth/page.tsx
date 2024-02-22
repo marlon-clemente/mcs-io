@@ -1,7 +1,8 @@
 "use client";
 
-import * as Form from "@/components/form";
 import Button from "@/components/ui/button";
+import * as Field from "@/components/ui/fields";
+import { Message } from "@/components/ui/message";
 import { userStore } from "@/store/user";
 import { authenticateUserSchema } from "@/types/auth/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,11 +10,13 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { LockKeyhole, LucideMail } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Auth() {
   const { setUser } = userStore((state) => state);
   const router = useRouter();
+  const [errorAuth, setErrorAuth] = useState<string>("");
 
   const {
     control,
@@ -39,6 +42,9 @@ export default function Auth() {
       });
       router.push(response.data.to);
     },
+    onError: (error: any) => {
+      setErrorAuth(error.response.data.message);
+    },
   });
 
   const handleAuth = (data: any) => {
@@ -57,7 +63,7 @@ export default function Auth() {
           Para acessar a aplicação, insira suas credenciais abaixo
         </span>
       </div>
-      <Form.Root
+      <form
         className="flex flex-col w-full gap-3"
         onSubmit={handleSubmit(handleAuth)}
       >
@@ -65,8 +71,9 @@ export default function Auth() {
           control={control}
           name="email"
           render={({ field }) => (
-            <Form.FieldText
+            <Field.InputText
               label="E-mail"
+              autoComplete="username"
               messageError={errors.email?.message as string}
               icon={<LucideMail size={18} />}
               {...field}
@@ -78,8 +85,10 @@ export default function Auth() {
           control={control}
           name="password"
           render={({ field }) => (
-            <Form.FieldText
+            <Field.InputText
               label="Senha"
+              autoComplete="current-password"
+              type="password"
               messageError={errors.password?.message as string}
               icon={<LockKeyhole size={18} />}
               {...field}
@@ -87,12 +96,12 @@ export default function Auth() {
           )}
         />
 
-        <Form.Submit asChild>
-          <Button variant="primary" isLoadind={isLoading}>
-            Entrar
-          </Button>
-        </Form.Submit>
-      </Form.Root>
+        {errorAuth.length > 0 && <Message variant="error">{errorAuth}</Message>}
+
+        <Button variant="primary" isLoadind={isLoading}>
+          Entrar
+        </Button>
+      </form>
     </div>
   );
 }
