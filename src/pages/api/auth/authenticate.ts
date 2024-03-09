@@ -48,7 +48,7 @@ export default async function authenticate(
         { userId: user.id, email: user.email },
         process.env.JWT_SECRET_KEY || "",
         {
-          expiresIn: "15m",
+          expiresIn: "10h",
         }
       );
 

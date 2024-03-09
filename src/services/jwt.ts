@@ -1,7 +1,7 @@
 import * as jose from "jose";
 import { cookies } from "next/headers";
 
-async function openSessionToken(token: string) {
+export async function openSessionToken(token: string) {
   const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
   const { payload } = await jose.jwtVerify(token, secret);
 

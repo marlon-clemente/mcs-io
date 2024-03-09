@@ -9,7 +9,7 @@ const typography = tv({
       description: "text-[15px] text-zinc-900",
       h1: "text-[18px] font-bold text-zinc-800",
       title: "text-[17px] font-medium text-zinc-900",
-      formLabel: "font-semibold",
+      formLabel: "font-semibold text-[14px]",
     },
     size: {
       default: "",

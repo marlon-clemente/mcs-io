@@ -24,13 +24,13 @@ export default function Auth() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(authenticateUserSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const {
-    error,
-    mutate: authenticate,
-    isLoading,
-  } = useMutation({
+  const { mutate: authenticate, isLoading } = useMutation({
     mutationKey: ["auth"],
     mutationFn: async (data: any) => {
       const response = await axios.post("/api/auth/authenticate", data);
@@ -48,12 +48,11 @@ export default function Auth() {
   });
 
   const handleAuth = (data: any) => {
-    console.log(data);
     authenticate(data);
   };
 
   return (
-    <div className="select-none max-w-[360px] p-6 justify-center bg-[#f5f6fa] items-center rounded-md w-full shadow-2xl flex flex-col m-auto">
+    <>
       <div className="flex flex-col justify-center items-center my-6">
         <div className="flex rounded-full">
           <LockKeyhole />
@@ -98,10 +97,10 @@ export default function Auth() {
 
         {errorAuth.length > 0 && <Message variant="error">{errorAuth}</Message>}
 
-        <Button variant="primary" isLoadind={isLoading}>
+        <Button variant="primary" type="submit" isLoadind={isLoading}>
           Entrar
         </Button>
       </form>
-    </div>
+    </>
   );
 }

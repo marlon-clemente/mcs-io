@@ -8,7 +8,6 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Button from "../../ui/button";
 /**
- *
  * @description Formulário que envia email de solicitação a novo usuário
  */
 
@@ -22,9 +21,14 @@ const newUserSchmema = z.object({
     }),
   validateInMinutes: z.any(),
 });
+
 type NewUser = z.infer<typeof newUserSchmema>;
 
-export const NewUser: React.FC = () => {
+interface NewUserProps {
+  closeModal: () => void;
+}
+
+export const NewUser: React.FC<NewUserProps> = ({ closeModal }) => {
   const {
     control,
     handleSubmit,
@@ -36,7 +40,7 @@ export const NewUser: React.FC = () => {
   const mutate = useMutation({
     onMutate: async (data: NewUser) => {
       await axios.post("/api/user", data);
-      console.log(data);
+      closeModal();
     },
   });
 
@@ -73,9 +77,7 @@ export const NewUser: React.FC = () => {
             label="Validade do link de solicitação"
             sufix="minutos"
             isError={errors.validateInMinutes ? true : false}
-            messageError={
-              errors.validateInMinutes ? errors.validateInMinutes.message : ""
-            }
+            messageError={errors.validateInMinutes?.message as string}
             {...field}
           />
         )}

@@ -8,7 +8,7 @@ type FieldTextProps = React.InputHTMLAttributes<HTMLInputElement> & {
   type?: "email" | "password" | "text";
   icon?: ReactElement;
   messageError?: string;
-  isError?: boolean;
+  isError?: boolean | string;
   isRequired?: boolean;
   sufix?: string;
   prefix?: string;
@@ -61,7 +61,9 @@ export const InputText = React.forwardRef<HTMLInputElement, FieldTextProps>(
         />
         {sufix && <span className="text-gray-800">{sufix}</span>}
       </div>
-      {messageError && <span className="text-red-500">{messageError}</span>}
+      {messageError && (
+        <span className="text-red-500 text-[12px]">{messageError}</span>
+      )}
     </fieldset>
   )
 );

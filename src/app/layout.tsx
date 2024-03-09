@@ -1,11 +1,10 @@
 "use client";
 
+import { Toaster } from "@/components/ui/toast/toaster";
 import { queryClient } from "@/services/useQuery";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Inter } from "next/font/google";
-import { useEffect } from "react";
 import "./globals.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -13,15 +12,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useEffect(() => {
-    console.log("RootLayout");
-  }, []);
-
   return (
     <html lang="pt-br">
-      <QueryClientProvider client={queryClient}>
-        <body className={inter.className + "theme-light"}>{children}</body>
-      </QueryClientProvider>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <div className={inter.className + "theme-light w-full h-full flex"}>
+            {children}
+          </div>
+        </QueryClientProvider>
+        <Toaster />
+      </body>
     </html>
   );
 }

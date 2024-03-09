@@ -9,6 +9,7 @@ import { NewUser } from "@/components/forms/users/new-user";
 import Button from "@/components/ui/button";
 import * as Modal from "@/components/ui/modal";
 import * as Table from "@/components/ui/table";
+import { useToast } from "@/components/ui/toast/use-toast";
 import Typography from "@/components/ui/typography";
 
 // import { Container } from './styles';
@@ -20,16 +21,25 @@ interface User {
   lastAccess: string;
 }
 const Users: React.FC = () => {
+  const { toast } = useToast();
+
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { isLoading: isLoadingUser, data: users } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await axios.get<User[]>("/api/user");
-      console.log(response.data);
       return response.data;
     },
   });
+
+  const handleToast = () => {
+    console.log("wiiiiii");
+    toast({
+      title: "Teste",
+      description: "Teste",
+    });
+  };
 
   return (
     <>
@@ -41,6 +51,7 @@ const Users: React.FC = () => {
               Usuarios
             </Typography>
           </div>
+          <button onClick={() => handleToast()}>Teste</button>
           <div className="flex gap-2">
             <Button className="flex gap-2" onClick={() => setIsOpenModal(true)}>
               <LucideUserRoundPlus size={18} />
@@ -74,11 +85,7 @@ const Users: React.FC = () => {
                     <Table.Cell className="text-zinc-500">
                       {tag.lastAccess}
                     </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {/* <Button size="icon">
-                          <MoreHorizontal className="size-4" />
-                        </Button> */}
-                    </Table.Cell>
+                    <Table.Cell className="text-right"></Table.Cell>
                   </Table.Row>
                 );
               })}
@@ -86,7 +93,7 @@ const Users: React.FC = () => {
         </Table.Root>
       </div>
 
-      <Modal.Root open={true}>
+      <Modal.Root open={isOpenModal}>
         <Modal.Header
           title="Adicionar novo usuário"
           onClose={() => setIsOpenModal(false)}
@@ -99,7 +106,7 @@ const Users: React.FC = () => {
           </Typography>
         </div>
 
-        <NewUser />
+        <NewUser closeModal={() => setIsOpenModal(true)} />
       </Modal.Root>
     </>
   );
