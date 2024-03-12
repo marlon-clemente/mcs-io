@@ -14,7 +14,7 @@ export const contactSchema = z.object({
 });
 
 export type Contact = z.infer<typeof contactSchema>;
-type ContactType = z.infer<typeof contactTypesSchema>;
+export type ContactType = z.infer<typeof contactTypesSchema>;
 
 export const CONTACT_TYPES = [
   "email",

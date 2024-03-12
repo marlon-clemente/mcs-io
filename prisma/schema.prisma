@@ -71,3 +71,11 @@ model CreatePassword {
 
   @@map("tb_create_password")
 }
+
+model businessSector {
+  id    String @id @default(uuid())
+  name  String
+  color String
+
+  @@map("business_sectors")
+}

@@ -91,7 +91,52 @@ export const Header = () => {
                 />
               </ul>
             </Navigation.Module>
-            <Navigation.Module label="Cadastros">Cadastros</Navigation.Module>
+            <Navigation.Module label="Cadastros">
+              <ul className="one m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[500px] sm:grid-cols-[0.75fr_1fr]">
+                <li className="row-span-3 grid">
+                  <NavigationMenu.Link asChild>
+                    <a
+                      className="focus:shadow-violet7 from-purple9 to-indigo9 flex
+                    h-full w-full select-none flex-col justify-end rounded-[6px] bg-green-300 p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px]"
+                      href="/"
+                    >
+                      <svg
+                        aria-hidden
+                        width="38"
+                        height="38"
+                        viewBox="0 0 25 25"
+                        fill="white"
+                      >
+                        <path d="M12 25C7.58173 25 4 21.4183 4 17C4 12.5817 7.58173 9 12 9V25Z"></path>
+                        <path d="M12 0H4V8H12V0Z"></path>
+                        <path d="M17 8C19.2091 8 21 6.20914 21 4C21 1.79086 19.2091 0 17 0C14.7909 0 13 1.79086 13 4C13 6.20914 14.7909 8 17 8Z"></path>
+                      </svg>
+                      <div className="mt-4 mb-[7px] text-[18px] font-medium leading-[1.2] text-white">
+                        Radix Primitives
+                      </div>
+                      <p className="text-mauve4 text-[14px] leading-[1.3]">
+                        Unstyled, accessible components for React.
+                      </p>
+                    </a>
+                  </NavigationMenu.Link>
+                </li>
+
+                <Navigation.ItemList
+                  title="Empresas"
+                  to="/company"
+                  description="Gerencie suas empresas."
+                />
+                <Navigation.ItemList
+                  title="Ramos de Atividade"
+                  to="/business-sector"
+                  description="Controle seus ramos de atividade."
+                />
+                <Navigation.ItemList
+                  title="Stitches"
+                  description="CSS-in-JS with best-in-class developer experience."
+                />
+              </ul>
+            </Navigation.Module>
 
             <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
               <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
