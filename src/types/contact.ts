@@ -10,7 +10,7 @@ const contactTypesSchema = z.enum([
 
 export const contactSchema = z.object({
   type: contactTypesSchema,
-  value: z.string(),
+  value: z.string({ required_error: "Campo obrigatório" }),
 });
 
 export type Contact = z.infer<typeof contactSchema>;

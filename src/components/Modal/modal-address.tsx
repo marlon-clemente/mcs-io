@@ -1,5 +1,5 @@
 import * as Modal from "@/components/ui/modal";
-import { Address } from "@/types/Address";
+import { Address } from "@/types/address";
 import { LucideUserRoundPlus } from "lucide-react";
 import React from "react";
 import AddressForm from "../forms/address";

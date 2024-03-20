@@ -43,7 +43,13 @@ export default function Auth() {
       router.push(response.data.to);
     },
     onError: (error: any) => {
-      setErrorAuth(error.response.data.message);
+      let message = error.response.data.message;
+
+      if (message !== typeof "string")
+        message = "Não foi possível autenticar o usuário";
+
+      console.log(message);
+      setErrorAuth(message);
     },
   });
 

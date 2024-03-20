@@ -1,10 +1,20 @@
 import Button from "@/components/ui/button";
-import { InputText } from "@/components/ui/fields";
+import {
+  InputText,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/fields";
+import Typography from "@/components/ui/typography";
+
 import { searchByCEP } from "@/services/searchByCEP";
-import { Address } from "@/types/Address";
+import { Address, addressSchema, STATES_BRAZIL } from "@/types/address";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
 interface AddressFormProps {
   onClose: () => void;
@@ -17,8 +27,15 @@ const AddressForm: React.FC<AddressFormProps> = ({
   onClose,
   address,
 }) => {
-  const { control, handleSubmit, setValue, watch } = useForm<Address>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<Address>({
     defaultValues: address || {},
+    resolver: zodResolver(addressSchema),
   });
 
   const cep = watch("cep");
@@ -26,6 +43,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
   const { mutate } = useMutation({
     mutationFn: async (cep: string) => {
       const response = await searchByCEP(cep);
+      setValue("id", uuidv4());
       setValue("bairro", response.bairro);
       setValue("logradouro", response.logradouro);
       setValue("complemento", response.complemento);
@@ -41,7 +59,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
   };
 
   useEffect(() => {
-    if (cep && cep.length === 8) {
+    if (cep && cep.length === 9) {
       mutate(cep);
     }
   }, [cep]);
@@ -50,21 +68,25 @@ const AddressForm: React.FC<AddressFormProps> = ({
     <>
       <form
         id="address-form"
-        className="w-full flex-col grid grid-cols-4 gap-1"
+        className="w-full flex-col grid grid-cols-4 gap-2 pt-4"
         onSubmit={handleSubmit(handleSubmitForm)}
       >
+        <pre>{JSON.stringify(errors, null, 2)}</pre>
+
         <div className="col-span-4">
           <Controller
             control={control}
             name="cep"
             render={({ field }) => (
               <InputText
-                mask="99999-999"
                 {...field}
                 label="CEP"
                 fullWidth
+                isRequired
+                mask="00000-000"
+                isError={errors.cep !== undefined}
+                messageError={errors.cep?.message}
                 placeholder="Digite o CEP"
-                // mask="99999-999"
               />
             )}
           />
@@ -89,12 +111,17 @@ const AddressForm: React.FC<AddressFormProps> = ({
             control={control}
             name="uf"
             render={({ field }) => (
-              <InputText
-                {...field}
-                label="UF"
-                placeholder="UF"
-                // mask="99999-999"
-              />
+              <Select value={field.value} onValueChange={field.onChange}>
+                <Typography variant="formLabel">UF</Typography>
+                <SelectTrigger className="my-1" placeholder="UF" />
+                <SelectContent className="w-auto overflow-auto">
+                  {STATES_BRAZIL.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
           />
         </div>

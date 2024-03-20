@@ -44,7 +44,7 @@ export const InputText = React.forwardRef<HTMLInputElement, FieldTextProps>(
     }, [mask]);
 
     return (
-      <fieldset className="flex flex-col gap-1">
+      <fieldset className="flex w-auto flex-col gap-1">
         <label htmlFor={inputProps.name}>
           <Typography variant="formLabel">{label}</Typography>
           {isRequired && (
@@ -55,7 +55,7 @@ export const InputText = React.forwardRef<HTMLInputElement, FieldTextProps>(
         </label>
         <div
           className={twMerge(
-            "flex w-full  items-center justify-center gap-2 rounded border border-zinc-300 px-3 py-1 shadow-sm outline-none",
+            "flex w-auto items-center justify-center gap-2 rounded border border-zinc-300 px-3 py-1 shadow-sm outline-none",
             messageError || isError
               ? "focus-within:ring-4 focus-within:ring-red-100"
               : "focus-within:ring-4 focus-within:ring-blue-100",
@@ -72,7 +72,7 @@ export const InputText = React.forwardRef<HTMLInputElement, FieldTextProps>(
             {...inputProps}
             type={inputProps.type || "text"}
             className={twMerge(
-              "flex-1 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none focus:ring-0 "
+              "flex-1 w-0 border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-600 outline-none focus:ring-0 "
             )}
           />
           {sufix && <span className="text-gray-800">{sufix}</span>}

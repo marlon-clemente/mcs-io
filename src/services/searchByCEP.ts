@@ -9,7 +9,7 @@ interface AddressAPI {
   uf: string;
   ibge: number;
   gia: number;
-  ddd: number;
+  ddd: string;
   siafi: number;
 }
 

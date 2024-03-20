@@ -13,9 +13,14 @@ export function Select(props: SelectProps) {
 export interface SelectTriggerProps
   extends ComponentProps<typeof SelectPrimitive.Trigger> {
   children?: never;
+  placeholder?: string;
 }
 
-export function SelectTrigger({ className, ...props }: SelectTriggerProps) {
+export function SelectTrigger({
+  className,
+  placeholder,
+  ...props
+}: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
       className={twMerge(
@@ -24,7 +29,7 @@ export function SelectTrigger({ className, ...props }: SelectTriggerProps) {
       )}
       {...props}
     >
-      <SelectPrimitive.Value placeholder="Select an option" />
+      <SelectPrimitive.Value placeholder={placeholder} />
 
       <SelectPrimitive.Icon className="text-zinc-600">
         <ChevronDown className="size-4" />

@@ -11,11 +11,12 @@ import { twMerge } from "tailwind-merge";
 import { Select, SelectContent, SelectItem, SelectTrigger } from ".";
 import Typography from "../typography";
 
-type FieldTextProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type FieldContactProps = React.InputHTMLAttributes<HTMLInputElement> & {
   value: Contact;
   messageError?: string;
   isError?: boolean | string;
   isRequired?: boolean;
+  onChange: (value: Contact) => void;
 };
 
 interface IconProps {
@@ -39,21 +40,35 @@ const Icon: React.FC<IconProps> = ({ type }) => {
   }
 };
 
-export const InputContact = React.forwardRef<HTMLInputElement, FieldTextProps>(
-  ({ value, messageError, isError, isRequired, ...inputProps }, ref) => {
+export const InputContact = React.forwardRef<
+  HTMLInputElement,
+  FieldContactProps
+>(
+  (
+    { value, messageError, isError, isRequired, onChange, ...inputProps },
+    ref
+  ) => {
     const [typeValue, setTypeValue] = useState<Contact>(value);
 
     const handleSelectType = (value: string) => {
       console.log(value);
-      setTypeValue((prev) => ({ ...prev, type: value }));
+      setTypeValue((prev) => {
+        const newValue = { ...prev, type: value };
+        onChange && onChange(newValue);
+        return newValue;
+      });
     };
 
     const handleChangeValue = (event) => {
-      setTypeValue((prev) => ({ ...prev, value: event.target.value }));
+      setTypeValue((prev) => {
+        const newValue = { ...prev, value: event.target.value };
+        onChange && onChange(newValue);
+        return newValue;
+      });
     };
 
     return (
-      <fieldset className="flex flex-col gap-1">
+      <fieldset className="flex flex-col gap-1 w-full">
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label htmlFor={inputProps.name}>
@@ -66,7 +81,7 @@ export const InputContact = React.forwardRef<HTMLInputElement, FieldTextProps>(
             </label>
             <div className="w-full col-span-1">
               <Select onValueChange={handleSelectType}>
-                <SelectTrigger />
+                <SelectTrigger placeholder="Selecione um tipo" />
                 <SelectContent className="w-auto">
                   {CONTACT.map((item) => (
                     <SelectItem key={item.value} value={item.value}>
@@ -79,7 +94,9 @@ export const InputContact = React.forwardRef<HTMLInputElement, FieldTextProps>(
           </div>
           <div className="col-span-2">
             <label htmlFor={inputProps.name}>
-              <Typography variant="formLabel">Tipo de contato</Typography>
+              <Typography variant="formLabel">
+                Contato - {typeValue.type}
+              </Typography>
               {isRequired && (
                 <Typography variant="formLabel" className="text-red-500 mx-1">
                   *
