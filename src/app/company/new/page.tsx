@@ -2,12 +2,10 @@
 
 import BusinessSector from "@/app/business-sector/page";
 import ModalAddress from "@/components/Modal/modal-address";
-import { Badge } from "@/components/ui/badge";
+import GridForm from "@/components/grid-form/grid-form";
 import Button from "@/components/ui/button";
 import CardFormEmptyData from "@/components/ui/cards/form-empty-data";
-import Divider from "@/components/ui/divider";
 import { InputContact, InputText } from "@/components/ui/fields";
-import InputPhoto from "@/components/ui/fields/input-photo";
 import * as Modal from "@/components/ui/modal";
 import Typography from "@/components/ui/typography";
 import { bussinessSectorSchema } from "@/types/bussinesSector";
@@ -110,14 +108,13 @@ const NewCompany: React.FC = () => {
       >
         <div>
           <Typography variant="title">Adicionar nova empresa</Typography>
-          <Divider />
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div>
+
+        {/* <div>
             <InputPhoto file={image} setFile={setImage} />
-          </div>
-          {/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
-          {/* <div className="col-span-1">
+          </div> */}
+        {/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
+        {/* <div className="col-span-1">
             <div className="bg-gray-300 rounded h-64 w-64 flex justify-center items-center">
               <div className="flex flex-col items-center">
                 <LucideImagePlus />
@@ -125,212 +122,175 @@ const NewCompany: React.FC = () => {
               </div>
             </div>
           </div> */}
+        <GridForm
+          hasDivider
+          icon={<LucideInfo />}
+          title="Informações da empresa"
+        >
+          <Controller
+            control={control}
+            name="corporateReason"
+            render={(field) => (
+              <InputText
+                {...field.field}
+                isRequired
+                placeholder="Informe a razão social"
+                isError={errors.corporateReason !== undefined}
+                label="Razão Social"
+                messageError={errors.corporateReason?.message}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="fantasyName"
+            render={(field) => (
+              <InputText
+                {...field.field}
+                isRequired
+                placeholder="Informe o nome fantasia"
+                isError={errors.fantasyName !== undefined}
+                label="Razão Social"
+                messageError={errors.fantasyName?.message}
+              />
+            )}
+          />
 
-          <div className="flex flex-col col-span-2 gap-4">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <LucideInfo />
-                <Typography variant="title">Informações da empresa</Typography>
-              </div>
-              <Divider />
-            </div>
+          <Controller
+            control={control}
+            name="cpnj"
+            render={(field) => (
+              <InputText
+                {...field.field}
+                isRequired
+                placeholder="Informe o CNPJ"
+                isError={errors.cpnj !== undefined}
+                label="CNPJ"
+                mask="00.000.000/0000-00"
+                messageError={errors.cpnj?.message}
+              />
+            )}
+          />
+        </GridForm>
 
-            <Controller
-              control={control}
-              name="corporateReason"
-              render={(field) => (
-                <InputText
-                  {...field.field}
-                  isRequired
-                  placeholder="Informe a razão social"
-                  isError={errors.corporateReason !== undefined}
-                  label="Razão Social"
-                  messageError={errors.corporateReason?.message}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="fantasyName"
-              render={(field) => (
-                <InputText
-                  {...field.field}
-                  isRequired
-                  placeholder="Informe o nome fantasia"
-                  isError={errors.fantasyName !== undefined}
-                  label="Razão Social"
-                  messageError={errors.fantasyName?.message}
-                />
-              )}
-            />
+        <GridForm
+          icon={<LucideInfo />}
+          hasDivider
+          title="Informações legais e fiscais"
+        >
+          <InputText
+            label="Inscrição estadual "
+            placeholder="Informe a inscrição estadual"
+          />
+          <InputText
+            label="Inscrição municipal"
+            placeholder="Informe a inscrição municipal"
+          />
+        </GridForm>
 
-            <Controller
-              control={control}
-              name="cpnj"
-              render={(field) => (
-                <InputText
-                  {...field.field}
-                  isRequired
-                  placeholder="Informe o CNPJ"
-                  isError={errors.cpnj !== undefined}
-                  label="CNPJ"
-                  mask="00.000.000/0000-00"
-                  messageError={errors.cpnj?.message}
-                />
-              )}
-            />
+        <GridForm
+          icon={<LucideUser />}
+          title="Representantes"
+          hasDivider
+          subtitle="Cadastre dados dos representantes da empresa"
+        >
+          <CardFormEmptyData
+            description="Adicionar novo representante"
+            icon={<LucidePlusCircle />}
+          />
+        </GridForm>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <LucideInfo />
-                <Typography variant="title">
-                  Informações legais e fiscais
-                </Typography>
-              </div>
-              <Divider />
-            </div>
-
-            <InputText
-              label="Inscrição estadual "
-              placeholder="Informe a inscrição estadual"
-            />
-            <InputText
-              label="Inscrição municipal"
-              placeholder="Informe a inscrição municipal"
-            />
-
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <LucideUser />
-                <Typography variant="title">Representantes</Typography>
-              </div>
-              <Divider />
-            </div>
-            <CardFormEmptyData
-              description="Adicionar novo representante"
-              icon={<LucidePlusCircle />}
-            />
-
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <LucideContact />
-                <Typography variant="title">Contatos</Typography>
-              </div>
-              <Divider />
-              {/* <InputContact value={} /> */}
-            </div>
-
-            {watch("contact")?.map((contact, index) => (
-              <div
-                key={index}
-                className="flex gap-1 justify-between items-center"
+        <GridForm hasDivider title="Contatos" icon={<LucideContact />}>
+          {watch("contact")?.map((contact, index) => (
+            <div
+              key={index}
+              className="flex gap-1 justify-between items-center"
+            >
+              <Controller
+                control={control}
+                name={`contact.${index}`}
+                render={({ field: { value, onChange } }) => (
+                  <InputContact value={value} onChange={onChange} />
+                )}
+              />
+              <button
+                type="button"
+                onClick={() => removeContact(index)}
+                className="hover:text-red-500"
               >
-                <Controller
-                  control={control}
-                  name={`contact.${index}`}
-                  render={({ field: { value, onChange } }) => (
-                    <InputContact value={value} onChange={onChange} />
-                  )}
-                />
-                <button
-                  type="button"
-                  onClick={() => removeContact(index)}
-                  className="hover:text-red-500"
-                >
-                  <LucideTrash2 size={16} />
-                </button>
-              </div>
-            ))}
-
-            <CardFormEmptyData
-              description="Adicionar novo contato"
-              icon={<LucidePlusCircle />}
-              onClick={() => addContact({ type: "email", value: "" })}
-            />
-
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <LucideMapPin />
-                <Typography variant="title">Endereço</Typography>
-              </div>
-              <Divider />
+                <LucideTrash2 size={16} />
+              </button>
             </div>
-            <div className="flex flex-col w-full gap-2">
-              {watch("address")?.map((address, index) => (
+          ))}
+
+          <CardFormEmptyData
+            description="Adicionar novo contato"
+            icon={<LucidePlusCircle />}
+            onClick={() => addContact({ type: "email", value: "" })}
+          />
+        </GridForm>
+
+        <GridForm title="Endreços" icon={<LucideMapPin />} hasDivider>
+          {watch("address")?.map((address, index) => (
+            <div
+              key={index}
+              className="flex gap-2 bg-gray-100 p-4 rounded justify-between hover:cursor-pointer"
+            >
+              <Typography variant="formLabel">
+                {address.cep} - {address.cidade} - {address.uf}
+              </Typography>
+              <button
+                type="button"
+                onClick={() => removeAddress(index)}
+                className="hover:text-red-500"
+              >
+                <LucideTrash2 size={16} />
+              </button>
+            </div>
+          ))}
+          <CardFormEmptyData
+            description="Adicionar novo endereço"
+            onClick={() => setIsOpenModalCEP(true)}
+            icon={<LucidePlusCircle />}
+          />
+        </GridForm>
+
+        <GridForm title="Ramos de atividade" icon={<LucideUser />} hasDivider>
+          {businessSector && businessSector.length > 0 && (
+            <div className="grid grid-cols-2 gap-4 mb-6 select-none">
+              {businessSector.map((sector) => (
                 <div
-                  key={index}
-                  className="flex gap-2 bg-gray-100 p-4 rounded justify-between hover:cursor-pointer"
+                  key={sector.id}
+                  onClick={() => handleSelectBusinessSector(sector.id!)}
+                  className={twMerge(
+                    "flex py-2 px-3 items-center gap-2 border border-gray-300 rounded hover:cursor-pointer hover:bg-gray-200",
+                    sector.selected ? "bg-blue-50 border-blue-500" : ""
+                  )}
                 >
-                  <Typography variant="formLabel">
-                    {address.cep} - {address.cidade} - {address.uf}
-                  </Typography>
-                  <button
-                    type="button"
-                    onClick={() => removeAddress(index)}
-                    className="hover:text-red-500"
-                  >
-                    <LucideTrash2 size={16} />
-                  </button>
+                  <input
+                    type="checkbox"
+                    checked={sector.selected}
+                    className="rounded bg-transparent"
+                  />
+                  {sector.name}
                 </div>
               ))}
             </div>
+          )}
 
+          {businessSector && businessSector.length === 0 && (
             <CardFormEmptyData
-              description="Adicionar novo endereço"
-              onClick={() => setIsOpenModalCEP(true)}
-              icon={<LucidePlusCircle />}
+              className="select-none"
+              description="Não há ramos de atividade cadastrados"
+              variant="onlyInfo"
             />
+          )}
+        </GridForm>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between">
-                <div className="flex gap-2">
-                  <LucideUser />
-                  <Typography variant="title">Ramos de atividade</Typography>
-                </div>
-                {businessSector && businessSector.length > 0 && (
-                  <Badge variant="primary">
-                    {businessSector?.filter((sector) => sector.selected).length}{" "}
-                    selecionados
-                  </Badge>
-                )}
-              </div>
-              <Divider />
-            </div>
-
-            {businessSector && businessSector.length > 0 && (
-              <div className="grid grid-cols-2 gap-4 mb-6 select-none">
-                {businessSector.map((sector) => (
-                  <div
-                    key={sector.id}
-                    onClick={() => handleSelectBusinessSector(sector.id!)}
-                    className={twMerge(
-                      "flex py-2 px-3 items-center gap-2 border border-gray-300 rounded hover:cursor-pointer hover:bg-gray-200",
-                      sector.selected ? "bg-blue-50 border-blue-500" : ""
-                    )}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={sector.selected}
-                      className="rounded bg-transparent"
-                    />
-                    {sector.name}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {businessSector && businessSector.length === 0 && (
-              <CardFormEmptyData
-                className="select-none"
-                description="Não há ramos de atividade cadastrados"
-                variant="onlyInfo"
-              />
-            )}
-
-            <Button form="company-form" type="submit">
-              Salvar
-            </Button>
-          </div>
+        <div className="flex flex-col col-span-2 gap-4">
+          <Button form="company-form" type="submit">
+            Salvar
+          </Button>
         </div>
       </form>
 
